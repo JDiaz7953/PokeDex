@@ -13,6 +13,16 @@ type cliCommand struct {
 	callback    func() error
 }
 
+//Struct to parse JSON
+type config struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous any    `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"results"`
+}
 
 // Map that holds the commands the program runs on
 func DisplayCL() map[string]cliCommand {
@@ -27,6 +37,9 @@ func DisplayCL() map[string]cliCommand {
 			description: "Exit the Pokedex",
 			callback:    commandExit,
 		},
+		"map" : {
+			callback: commandMap,
+		},
 	}
 	
 }
@@ -37,17 +50,12 @@ func main(){
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		text, ok := commands[scanner.Text()]
+		text, ok := commands[scanner.Text()];
 		if !ok {
 			fmt.Println("Invalid Command")
-			fmt.Println("Try" + "'help'" + "menu")
+			fmt.Println("Try " + " 'help' " + " menu")
+			continue
 		}
 		text.callback()
-
-
-
-
-		
-	
 }
 }
