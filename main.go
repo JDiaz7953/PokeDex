@@ -10,14 +10,21 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*ChangePage) error
 }
 
+type ChangePage struct {
+	APIClient string
+	NextLocationUrl *string
+	PrevLocationUrl *string
+}
+
+
 //Struct to parse JSON
-type config struct {
+type LocationAreas struct {
 	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous any    `json:"previous"`
+	Next     *string `json:"next"`
+	Prev *string   `json:"previous"`
 	Results  []struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
@@ -38,7 +45,15 @@ func DisplayCL() map[string]cliCommand {
 			callback:    commandExit,
 		},
 		"map" : {
+			name:        "map",
+			description: "Displays list of locations",
 			callback: commandMap,
+		},
+
+		"mapb" : {
+			name:        "mapb",
+			description: "Displays previous list of locations",
+			callback: commandMapBack,
 		},
 	}
 	
@@ -47,6 +62,12 @@ func DisplayCL() map[string]cliCommand {
 func main(){
 	commands := DisplayCL()
 	scanner := bufio.NewScanner(os.Stdin)
+	ChangeP := ChangePage{
+		APIClient: "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
+		NextLocationUrl: nil,
+	    PrevLocationUrl: nil,
+	}
+
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -56,6 +77,6 @@ func main(){
 			fmt.Println("Try " + " 'help' " + " menu")
 			continue
 		}
-		text.callback()
+		text.callback(&ChangeP)
 }
 }
