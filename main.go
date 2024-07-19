@@ -4,32 +4,32 @@ import (
 	"os"
 	"bufio"
 	"fmt"
-	
+	 "github.com/JDiaz7953/PokeDex/internal/pokeapi"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*ChangePage) error
+	callback    func(*pokeapi.ChangePage) error
 }
 
-type ChangePage struct {
-	APIClient string
-	NextLocationUrl *string
-	PrevLocationUrl *string
-}
+// type ChangePage struct {
+// 	APIClient string
+// 	NextLocationUrl *string
+// 	PrevLocationUrl *string
+// }
 
 
-//Struct to parse JSON
-type LocationAreas struct {
-	Count    int    `json:"count"`
-	Next     *string `json:"next"`
-	Prev *string   `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
+// //Struct to parse JSON
+// type LocationAreas struct {
+// 	Count    int    `json:"count"`
+// 	Next     *string `json:"next"`
+// 	Prev *string   `json:"previous"`
+// 	Results  []struct {
+// 		Name string `json:"name"`
+// 		URL  string `json:"url"`
+// 	} `json:"results"`
+// }
 
 // Map that holds the commands the program runs on
 func DisplayCL() map[string]cliCommand {
@@ -62,7 +62,7 @@ func DisplayCL() map[string]cliCommand {
 func main(){
 	commands := DisplayCL()
 	scanner := bufio.NewScanner(os.Stdin)
-	ChangeP := ChangePage{
+	ChangeP := pokeapi.ChangePage{
 		APIClient: "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
 		NextLocationUrl: nil,
 	    PrevLocationUrl: nil,

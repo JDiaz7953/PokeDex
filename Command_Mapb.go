@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"os"
 	"fmt"
+	"github.com/JDiaz7953/PokeDex/internal/pokeapi"
 	
 )
 
-func commandMapBack(ChangeP *ChangePage) error{
+func commandMapBack(ChangeP *pokeapi.ChangePage) error{
 	//http Request that gets the Locations. If user called map already it goes to the previous set of 20 questions and so on.
 	myUrl := *ChangeP.PrevLocationUrl
 	if ChangeP.PrevLocationUrl == nil{
@@ -29,7 +30,7 @@ func commandMapBack(ChangeP *ChangePage) error{
 		}
 	
 	//Unmarshall data(turn from bytes to strings)
-	var Location LocationAreas
+	var Location pokeapi.LocationAreas
 	err = json.Unmarshal(info, &Location)
 	if err != nil{
 		os.Exit(1)
@@ -41,25 +42,7 @@ func commandMapBack(ChangeP *ChangePage) error{
 	}
 
 	ChangeP.NextLocationUrl = Location.Next
-	ChangeP.PrevLocationUrl = Location.Next
+	ChangeP.PrevLocationUrl = Location.Prev
 
 	return nil
 }
-
-
-
-
-// func commandMapBack(ChangeP *ChangePage) error{
-// 	Location := GetHttp(ChangeP)
-
-// 	//Print Location
-// 	for  _, v := range Location.Results{
-// 		fmt.Println(v.Name)
-// 	}
-
-// 	ChangeP.NextLocationUrl = Location.Next
-// 	ChangeP.PrevLocationUrl = Location.Next
-
-// 	return nil
-
-// 	} 

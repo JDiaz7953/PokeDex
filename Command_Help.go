@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/JDiaz7953/PokeDex/internal/pokeapi"
 )
 
-func commandHelp(ChangeP *ChangePage) error {
+func commandHelp(ChangeP *pokeapi.ChangePage) error {
 	//Displays Commands
 	commands := DisplayCL()
 	fmt.Println("Welcome to the Pokedex!")
