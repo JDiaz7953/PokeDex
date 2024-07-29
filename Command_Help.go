@@ -5,7 +5,7 @@ import (
 	"github.com/JDiaz7953/PokeDex/internal/pokeapi"
 )
 
-func commandHelp(ChangeP *pokeapi.ChangePage) error {
+func commandHelp(ChangeP *pokeapi.ChangePage, ex *pokeapi.PokemonInArea,  nameLoc string) error {
 	//Displays Commands
 	commands := DisplayCL()
 	fmt.Println("Welcome to the Pokedex!")
@@ -16,6 +16,7 @@ func commandHelp(ChangeP *pokeapi.ChangePage) error {
 	fmt.Println(commands["exit"].name + ": " + commands["exit"].description)
 	fmt.Println(commands["map"].name + " : " + commands["map"].description)
 	fmt.Println(commands["mapb"].name + ": " + commands["mapb"].description)
+	fmt.Println(commands["explore"].name + ": " + commands["explore"].description)
 	fmt.Println("")
 	return nil
 }

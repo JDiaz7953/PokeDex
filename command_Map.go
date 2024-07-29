@@ -7,7 +7,7 @@ import (
 )
 
 //Prints a page of 20 Locations
-func commandMap(ChangeP *pokeapi.ChangePage) error{
+func commandMap(ChangeP *pokeapi.ChangePage, ex *pokeapi.PokemonInArea,  nameLoc string) error{
 	Location := pokeapi.GetHttpReq(ChangeP)
 	for  _, v := range Location.Results{
 		fmt.Println(v.Name)

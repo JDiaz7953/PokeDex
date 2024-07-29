@@ -5,31 +5,15 @@ import (
 	"bufio"
 	"fmt"
 	 "github.com/JDiaz7953/PokeDex/internal/pokeapi"
+	 "strings"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*pokeapi.ChangePage) error
+	callback    func(*pokeapi.ChangePage, *pokeapi.PokemonInArea,  string) error
 }
 
-// type ChangePage struct {
-// 	APIClient string
-// 	NextLocationUrl *string
-// 	PrevLocationUrl *string
-// }
-
-
-// //Struct to parse JSON
-// type LocationAreas struct {
-// 	Count    int    `json:"count"`
-// 	Next     *string `json:"next"`
-// 	Prev *string   `json:"previous"`
-// 	Results  []struct {
-// 		Name string `json:"name"`
-// 		URL  string `json:"url"`
-// 	} `json:"results"`
-// }
 
 // Map that holds the commands the program runs on
 func DisplayCL() map[string]cliCommand {
@@ -55,6 +39,11 @@ func DisplayCL() map[string]cliCommand {
 			description: "Displays previous list of locations",
 			callback: commandMapBack,
 		},
+		"explore" : {
+			name: "explore",
+			description: "explore area to find pokemon by explore <location>",
+			callback: commandExplore,
+		},
 	}
 	
 }
@@ -62,21 +51,35 @@ func DisplayCL() map[string]cliCommand {
 func main(){
 	commands := DisplayCL()
 	scanner := bufio.NewScanner(os.Stdin)
+
+
 	ChangeP := pokeapi.ChangePage{
 		APIClient: "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20",
 		NextLocationUrl: nil,
 	    PrevLocationUrl: nil,
 	}
 
+	explore := pokeapi.PokemonInArea{
+		LocationAreaURL: "https://pokeapi.co/api/v2/location-area/" ,
+
+	}
+
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		text, ok := commands[scanner.Text()];
+		input := scanner.Text()
+		parts := strings.Fields(input)
+		cmd := parts[0]
+		nameOfArea := ""
+		if cmd == "explore" && len(parts) > 1 {
+			nameOfArea = parts[1]
+		}
+		text, ok := commands[cmd];
 		if !ok {
 			fmt.Println("Invalid Command")
 			fmt.Println("Try " + " 'help' " + " menu")
 			continue
 		}
-		text.callback(&ChangeP)
+		text.callback(&ChangeP, &explore, nameOfArea  )
 }
 }

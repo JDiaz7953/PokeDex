@@ -9,6 +9,9 @@ type ChangePage struct {
 	PrevLocationUrl *string
 }
 
+type PokemonInArea struct{
+	LocationAreaURL string
+}
 
 //Struct to parse JSON
 type LocationAreas struct {
@@ -21,30 +24,55 @@ type LocationAreas struct {
 	} `json:"results"`
 }
 
-
-// func GetHttp(ChangeP *ChangePage) LocationAreas{
-// 	//http Request that gets the Locations. If user called map already it goes to the next set of 20 questions and so on.
-// 	myUrl := ChangeP.APIClient
-// 	if ChangeP.NextLocationUrl != nil{
-// 		myUrl = *ChangeP.NextLocationUrl
-// 	}
-// 	response, err := http.Get(myUrl)
-// 	if err != nil {
-// 		os.Exit(1)
-// 	}
-// 	defer response.Body.Close()
-
-// 	//read response from the body
-// 	info, err := io.ReadAll(response.Body)
-// 		if err != nil{
-// 			os.Exit(1)
-// 		}
-	
-// 	//Unmarshall data(turn from bytes to strings)
-// 	var locations LocationAreas
-// 	err = json.Unmarshal(info, &locations )
-// 	if err != nil{
-// 		os.Exit(1)
-// 	}
-// 	return locations 
-// }
+type Explorelocation struct {
+	EncounterMethodRates []struct {
+		EncounterMethod struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"encounter_method"`
+		VersionDetails []struct {
+			Rate    int `json:"rate"`
+			Version struct {
+				Name string `json:"name"`
+				URL  string `json:"url"`
+			} `json:"version"`
+		} `json:"version_details"`
+	} `json:"encounter_method_rates"`
+	GameIndex int `json:"game_index"`
+	ID        int `json:"id"`
+	Location  struct {
+		Name string `json:"name"`
+		URL  string `json:"url"`
+	} `json:"location"`
+	Name  string `json:"name"`
+	Names []struct {
+		Language struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"language"`
+		Name string `json:"name"`
+	} `json:"names"`
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+		VersionDetails []struct {
+			EncounterDetails []struct {
+				Chance          int   `json:"chance"`
+				ConditionValues []any `json:"condition_values"`
+				MaxLevel        int   `json:"max_level"`
+				Method          struct {
+					Name string `json:"name"`
+					URL  string `json:"url"`
+				} `json:"method"`
+				MinLevel int `json:"min_level"`
+			} `json:"encounter_details"`
+			MaxChance int `json:"max_chance"`
+			Version   struct {
+				Name string `json:"name"`
+				URL  string `json:"url"`
+			} `json:"version"`
+		} `json:"version_details"`
+	} `json:"pokemon_encounters"`
+}

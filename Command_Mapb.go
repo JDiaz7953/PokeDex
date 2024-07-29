@@ -9,7 +9,7 @@ import (
 	
 )
 
-func commandMapBack(ChangeP *pokeapi.ChangePage) error{
+func commandMapBack(ChangeP *pokeapi.ChangePage, ex *pokeapi.PokemonInArea,  nameLoc string) error{
 	//http Request that gets the Locations. If user called map already it goes to the previous set of 20 questions and so on.
 	myUrl := *ChangeP.PrevLocationUrl
 	if ChangeP.PrevLocationUrl == nil{
